@@ -5,6 +5,7 @@ from ..models import AdminUser, ChatLog, Feedback, SubmittedQuestion, FAQEntry
 from ..services.embedding_service import EmbeddingService
 import bcrypt
 import jwt
+import json
 from datetime import datetime, timedelta
 
 admin_bp = Blueprint('admin', __name__)
@@ -177,6 +178,7 @@ def approve_submission(current_user, submission_id):
         
         # Generate embedding for the question
         embedding = EmbeddingService.generate_embedding(submission.question)
+        embedding_json = json.dumps(embedding) if embedding else None
         
         # Create FAQ entry
         faq_entry = FAQEntry(
@@ -184,7 +186,7 @@ def approve_submission(current_user, submission_id):
             answer=answer,
             category=category,
             faculty=faculty,
-            embedding=embedding
+            embedding=embedding_json
         )
         
         submission.status = 'approved'
@@ -275,6 +277,7 @@ def create_faq_entry(current_user):
         
         # Generate embedding
         embedding = EmbeddingService.generate_embedding(question)
+        embedding_json = json.dumps(embedding) if embedding else None
         
         faq_entry = FAQEntry(
             question=question,
@@ -283,7 +286,7 @@ def create_faq_entry(current_user):
             faculty=faculty,
             academic_year=academic_year,
             tags=tags,
-            embedding=embedding
+            embedding=embedding_json
         )
         
         db.session.add(faq_entry)
@@ -316,7 +319,8 @@ def update_faq_entry(current_user, entry_id):
         if 'question' in data:
             entry.question = data['question']
             # Regenerate embedding if question changed
-            entry.embedding = EmbeddingService.generate_embedding(data['question'])
+            embedding = EmbeddingService.generate_embedding(data['question'])
+            entry.embedding = json.dumps(embedding) if embedding else None
         
         if 'answer' in data:
             entry.answer = data['answer']
@@ -402,7 +406,8 @@ def trigger_monthly_update(current_user):
         updated_count = 0
         
         for entry in entries:
-            entry.embedding = EmbeddingService.generate_embedding(entry.question)
+            embedding = EmbeddingService.generate_embedding(entry.question)
+            entry.embedding = json.dumps(embedding) if embedding else None
             updated_count += 1
         
         db.session.commit()

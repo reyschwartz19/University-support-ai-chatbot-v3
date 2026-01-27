@@ -32,9 +32,11 @@ class ContentFilter:
         """
         text_lower = text.lower()
         
-        # Check for blocked keywords
+        # Check for blocked keywords using word boundaries
         for keyword in cls.BLOCKED_KEYWORDS:
-            if keyword in text_lower:
+            # Escape keyword to handle special characters safely
+            pattern = r'\b' + re.escape(keyword) + r'\b'
+            if re.search(pattern, text_lower):
                 return True, f"Content contains inappropriate keyword"
         
         # Check for blocked patterns

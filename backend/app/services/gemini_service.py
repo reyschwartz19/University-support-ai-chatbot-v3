@@ -37,7 +37,7 @@ class GeminiService:
         prompt = cls._build_prompt(user_query, context_text)
         
         try:
-            model = genai.GenerativeModel('gemini-pro')
+            model = genai.GenerativeModel('models/gemini-flash-latest')
             response = model.generate_content(prompt)
             
             if response.text:

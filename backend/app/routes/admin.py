@@ -279,13 +279,16 @@ def create_faq_entry(current_user):
         embedding = EmbeddingService.generate_embedding(question)
         embedding_json = json.dumps(embedding) if embedding else None
         
+        # Convert tags list to JSON string for SQLite
+        tags_json = json.dumps(tags) if tags else None
+        
         faq_entry = FAQEntry(
             question=question,
             answer=answer,
             category=category,
             faculty=faculty,
             academic_year=academic_year,
-            tags=tags,
+            tags=tags_json,
             embedding=embedding_json
         )
         
@@ -331,7 +334,7 @@ def update_faq_entry(current_user, entry_id):
         if 'academic_year' in data:
             entry.academic_year = data['academic_year']
         if 'tags' in data:
-            entry.tags = data['tags']
+            entry.tags = json.dumps(data['tags']) if data['tags'] else None
         
         db.session.commit()
         

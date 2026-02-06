@@ -35,7 +35,7 @@ export default function App() {
                 fontSize: '12px',
                 marginTop: '16px'
             }}>
-                <p>© 2024 University Administrative Services. All rights reserved.</p>
+                <p>© 2026 University Administrative Services. All rights reserved.</p>
                 <p style={{ marginTop: '4px' }}>
                     For urgent matters, please contact the relevant administrative office directly.
                 </p>

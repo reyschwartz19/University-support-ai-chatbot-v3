@@ -59,4 +59,4 @@ CREATE INDEX IF NOT EXISTS idx_feedback_chat ON feedback(chat_id);
 CREATE INDEX IF NOT EXISTS idx_submissions_status ON submitted_questions(status);
 
 -- Create vector similarity search index
-CREATE INDEX IF NOT EXISTS idx_faq_embedding ON faq_entries USING ivfflat (embedding vector_cosine_ops) WITH (lists = 100);
+CREATE INDEX IF NOT EXISTS idx_faq_embedding ON faq_entries USING hnsw (embedding vector_cosine_ops);

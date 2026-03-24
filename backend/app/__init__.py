@@ -21,7 +21,8 @@ def create_app(config_name=None):
     # Initialize extensions
     db.init_app(app)
     limiter.init_app(app)
-    CORS(app, origins=['http://localhost:3000', 'http://localhost:3001'])
+    cors_origins = os.getenv('CORS_ORIGINS', 'http://localhost:3000,http://localhost:3001').split(',')
+    CORS(app, origins=[o.strip() for o in cors_origins])
     
     # Register blueprints
     from .routes.chat import chat_bp

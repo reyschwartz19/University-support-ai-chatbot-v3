@@ -67,9 +67,6 @@ export default function Login() {
                     </button>
                 </form>
 
-                <p style={{ marginTop: '24px', textAlign: 'center', fontSize: '12px', color: 'var(--color-gray-500)' }}>
-                    Default credentials: admin / admin123
-                </p>
             </div>
         </div>
     );

@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM python:3.13-slim
 
 WORKDIR /app
 
@@ -18,5 +18,5 @@ COPY . .
 # Expose port
 EXPOSE 5000
 
-# Run with gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "4", "run:app"]
+# Run with gunicorn using PORT env var (Render sets this)
+CMD gunicorn --bind 0.0.0.0:${PORT:-5000} --workers 4 run:app

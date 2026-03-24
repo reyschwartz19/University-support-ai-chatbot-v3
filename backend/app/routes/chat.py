@@ -118,7 +118,8 @@ def chat():
         })
     
     except Exception as e:
-        current_app.logger.error(f"Chat error: {str(e)}")
+        import traceback
+        current_app.logger.error(f"Chat error: {str(e)}\n{traceback.format_exc()}")
         return jsonify({
             'error': 'An unexpected error occurred',
             'response': 'I apologize, but there was an error processing your request. Please try again later.',

@@ -7,11 +7,11 @@ class Config:
     """Base configuration"""
     SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key-change-in-production')
     
-    # Database - Use SQLite for local development, PostgreSQL for production
-    SQLALCHEMY_DATABASE_URI = os.getenv(
-        'DATABASE_URL',
-        'sqlite:///university_chatbot.db'
-    )
+    # Database - Fix Render's postgres:// prefix to postgresql://
+    _db_url = os.getenv('DATABASE_URL', 'sqlite:///university_chatbot.db')
+    if _db_url.startswith('postgres://'):
+        _db_url = _db_url.replace('postgres://', 'postgresql://', 1)
+    SQLALCHEMY_DATABASE_URI = _db_url
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     # Gemini API

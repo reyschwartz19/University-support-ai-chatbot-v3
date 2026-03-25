@@ -12,6 +12,8 @@ class EmbeddingService:
     def get_model(cls):
         """Lazy load the embedding model"""
         if cls._model is None:
+            import torch
+            torch.set_num_threads(1)  # Reduce memory footprint limit
             model_name = current_app.config.get('EMBEDDING_MODEL', 'all-MiniLM-L6-v2')
             cls._model = SentenceTransformer(model_name)
         return cls._model

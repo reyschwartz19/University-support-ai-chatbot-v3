@@ -117,3 +117,55 @@ class AdminUser(db.Model):
             'role': self.role,
             'created_at': self.created_at.isoformat() if self.created_at else None
         }
+
+
+class StudentRequest(db.Model):
+    """Student administrative requests"""
+    __tablename__ = 'student_requests'
+    
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    reference_code = db.Column(db.String(15), unique=True, nullable=False)
+    student_name = db.Column(db.String(100), nullable=False)
+    student_id = db.Column(db.String(50), nullable=False)
+    request_type = db.Column(db.String(100), nullable=False)
+    details = db.Column(db.Text)
+    preferred_date = db.Column(db.String(10))
+    preferred_time = db.Column(db.String(20))
+    status = db.Column(db.String(30), default="Pending")
+    admin_note = db.Column(db.Text)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'reference_code': self.reference_code,
+            'student_name': self.student_name,
+            'student_id': self.student_id,
+            'request_type': self.request_type,
+            'details': self.details,
+            'preferred_date': self.preferred_date,
+            'preferred_time': self.preferred_time,
+            'status': self.status,
+            'admin_note': self.admin_note,
+            'created_at': self.created_at.isoformat() if self.created_at else None
+        }
+
+
+class BlockedDate(db.Model):
+    """Dates unavailable for appointments"""
+    __tablename__ = 'blocked_dates'
+    
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    date = db.Column(db.String(10), unique=True, nullable=False)
+    reason = db.Column(db.String(200))
+    blocked_by = db.Column(db.String(80))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'date': self.date,
+            'reason': self.reason,
+            'blocked_by': self.blocked_by,
+            'created_at': self.created_at.isoformat() if self.created_at else None
+        }

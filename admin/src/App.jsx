@@ -7,6 +7,8 @@ import ChatLogs from './pages/ChatLogs';
 import Submissions from './pages/Submissions';
 import FAQEditor from './pages/FAQEditor';
 import FeedbackReview from './pages/FeedbackReview';
+import AdminRequests from './pages/AdminRequests';
+import AdminAvailability from './pages/AdminAvailability';
 
 function ProtectedRoute({ children }) {
     if (!isAuthenticated()) {
@@ -78,6 +80,22 @@ function AdminLayout({ children }) {
                                 FAQ Editor
                             </NavLink>
                         </li>
+                        <li>
+                            <NavLink to="/requests" className={({ isActive }) => `admin-sidebar__link ${isActive ? 'admin-sidebar__link--active' : ''}`}>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                Student Requests
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/availability" className={({ isActive }) => `admin-sidebar__link ${isActive ? 'admin-sidebar__link--active' : ''}`}>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Availability
+                            </NavLink>
+                        </li>
                     </ul>
                 </nav>
 
@@ -138,6 +156,16 @@ export default function App() {
             <Route path="/faq" element={
                 <ProtectedRoute>
                     <AdminLayout><FAQEditor /></AdminLayout>
+                </ProtectedRoute>
+            } />
+            <Route path="/requests" element={
+                <ProtectedRoute>
+                    <AdminLayout><AdminRequests /></AdminLayout>
+                </ProtectedRoute>
+            } />
+            <Route path="/availability" element={
+                <ProtectedRoute>
+                    <AdminLayout><AdminAvailability /></AdminLayout>
                 </ProtectedRoute>
             } />
         </Routes>

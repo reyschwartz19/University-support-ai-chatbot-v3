@@ -29,10 +29,12 @@ def create_app(config_name=None):
     from .routes.feedback import feedback_bp
     from .routes.faq import faq_bp
     from .routes.admin import admin_bp
+    from .routes.requests_routes import requests_bp
     
     app.register_blueprint(chat_bp, url_prefix='/api')
     app.register_blueprint(feedback_bp, url_prefix='/api')
     app.register_blueprint(faq_bp, url_prefix='/api')
+    app.register_blueprint(requests_bp, url_prefix='/api')
     app.register_blueprint(admin_bp, url_prefix='/api/admin')
     
     # Create tables

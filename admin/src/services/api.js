@@ -157,6 +157,68 @@ export async function deleteFAQEntry(entryId) {
     return response.json();
 }
 
+/**
+ * Get all student requests
+ */
+export async function getAdminRequests(filters = {}) {
+    let url = `${API_BASE_URL}/requests?`;
+    if (filters.status) url += `status=${filters.status}&`;
+    if (filters.date) url += `date=${filters.date}&`;
+    if (filters.request_type) url += `request_type=${filters.request_type}`;
+
+    const response = await fetch(url, { headers: authHeaders() });
+    if (!response.ok) throw new Error('Failed to fetch requests');
+    return response.json();
+}
+
+/**
+ * Update request status or note
+ */
+export async function updateAdminRequest(id, data) {
+    const response = await fetch(`${API_BASE_URL}/requests/${id}`, {
+        method: 'PATCH',
+        headers: authHeaders(),
+        body: JSON.stringify(data)
+    });
+    if (!response.ok) throw new Error('Failed to update request');
+    return response.json();
+}
+
+/**
+ * Get all blocked dates
+ */
+export async function getAdminBlockedDates() {
+    const response = await fetch(`${API_BASE_URL}/blocked-dates`, { headers: authHeaders() });
+    if (!response.ok) throw new Error('Failed to fetch blocked dates');
+    return response.json();
+}
+
+/**
+ * Add a blocked date
+ */
+export async function addBlockedDate(date, reason) {
+    const response = await fetch(`${API_BASE_URL}/blocked-dates`, {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify({ date, reason })
+    });
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.error || 'Failed to block date');
+    return result;
+}
+
+/**
+ * Remove a blocked date
+ */
+export async function removeBlockedDate(id) {
+    const response = await fetch(`${API_BASE_URL}/blocked-dates/${id}`, {
+        method: 'DELETE',
+        headers: authHeaders()
+    });
+    if (!response.ok) throw new Error('Failed to unblock date');
+    return response.json();
+}
+
 // Trigger monthly update
 export async function triggerUpdate() {
     const response = await fetch(`${API_BASE_URL}/trigger-update`, {
